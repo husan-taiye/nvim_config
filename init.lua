@@ -144,8 +144,6 @@ require("lazy").setup({
 					end
 				end,
 			})
-
-			require("nvim-autopairs").setup({})
 		end,
 	},
 })
