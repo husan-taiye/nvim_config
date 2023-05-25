@@ -113,12 +113,14 @@ require("lazy").setup({
 		dependencies = { 'williamboman/mason-lspconfig.nvim' }
 	},
 	{
+		event = "VeryLazy",
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup({})
 		end,
 	},
 	{
+		event = "VeryLazy",
 		"jose-elias-alvarez/null-ls.nvim",
 		dependencies = { 'plenary.nvim' },
 		config = function()
@@ -145,6 +147,13 @@ require("lazy").setup({
 				end,
 			})
 		end,
+	},
+	{
+		event = "VeryLazy",
+		'lewis6991/gitsigns.nvim',
+		config = function()
+			require('gitsigns').setup()
+		end
 	},
 })
 
