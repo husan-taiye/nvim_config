@@ -1,3 +1,2 @@
 print('xxx')
-
-    a ="c"
+a = "c"
