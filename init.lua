@@ -117,7 +117,10 @@ require("lazy").setup({
 			let NERDTreeShowLineNumbers=1
 			autocmd FileType nerdtree setlocal relativenumber
 			]])
-		end
+		end,
+		dependencies = {
+			"Xuyuanp/nerdtree-git-plugin"
+		}
 	},
 	{
 		"hrsh7th/nvim-cmp",
