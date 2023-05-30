@@ -95,7 +95,6 @@ require("lazy").setup({
 		event = "BufReadPre",
 		config = function()
 			require("persistence").setup()
-			require("persistence").load({ last = true })
 		end,
 		lazy = false,
 	},
@@ -401,3 +400,12 @@ vim.cmd([[
 	highlight ConflictMarkerEnd guibg=#2f628e
 	highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
 ]])
+
+
+-- 启动nvim配置
+local args = vim.api.nvim_get_vvar("argv")
+-- embed
+if #args > 2 then
+else
+	require("persistence").load({ last = true })
+end
