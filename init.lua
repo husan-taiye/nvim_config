@@ -98,6 +98,28 @@ require("lazy").setup({
 		event = "VeryLazy"
 	},
 	{
+		'rhysd/conflict-marker.vim',
+		event = 'VeryLazy',
+		config = function()
+		end
+	},
+	{
+		"preservim/nerdtree",
+		cmd = {
+			"NERDTreeToggle", "NERDTree", "NERDTreeFind"
+		},
+		keys = {
+			{ "<leader>t", ":NERDTreeToggle<CR>", desc = "toggle nerdtree" },
+			{ "<leader>l", ":NERDTreeFind<CR>",   desc = "nerdtree find" },
+		},
+		config = function()
+			vim.cmd([[
+			let NERDTreeShowLineNumbers=1
+			autocmd FileType nerdtree setlocal relativenumber
+			]])
+		end
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		event = "VeryLazy",
 		dependencies = {
@@ -166,6 +188,9 @@ require("lazy").setup({
 			require('gitsigns').setup()
 		end
 	},
+	{
+		'kyazdani42/nvim-tree.lua',
+	}
 })
 
 -- 加载base16-tender
@@ -175,6 +200,7 @@ vim.cmd.colorscheme("base16-tender")
 local lspconfig = require('lspconfig')
 require("mason").setup()
 require("mason-lspconfig").setup()
+require('nvim-tree').setup {}
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
@@ -352,3 +378,16 @@ vim.cmd.cnoreabbrev([[git Git]])
 vim.cmd.abbreviate("ture", "true")
 vim.cmd.cnoreabbrev([[gp Git push]])
 vim.cmd.cnoreabbrev([[Gbrowse GBrowse]])
+
+vim.cmd([[
+	let g:conflict_marker_highlight_group = ''
+	" Include text after begin and end markers
+	let g:conflict_marker_begin = '^<<<<<<< .*$'
+	let g:conflict_marker_end   = '^>>>>>>> .*$'
+
+	highlight ConflictMarkerBegin guibg=#2f7366
+	highlight ConflictMarkerOurs guibg=#2e5049
+	highlight ConflictMarkerTheirs guibg=#344f69
+	highlight ConflictMarkerEnd guibg=#2f628e
+	highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
+]])
