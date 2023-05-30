@@ -77,6 +77,13 @@ require("lazy").setup({
 	{
 		event = "VeryLazy",
 		"tpope/vim-fugitive",
+		cmd = "Git",
+		config = function()
+			vim.cmd.cnoreabbrev([[git Git]])
+			vim.cmd.abbreviate("ture", "true")
+			vim.cmd.cnoreabbrev([[gp Git push]])
+			vim.cmd.cnoreabbrev([[Gbrowse GBrowse]])
+		end
 	},
 	{
 		"folke/neodev.nvim",
