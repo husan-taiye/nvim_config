@@ -92,6 +92,11 @@ require("lazy").setup({
 	-- persistence
 	{
 		"folke/persistence.nvim",
+		event = "BufReadPre",
+		config = function()
+			require("persistence").setup()
+			require("persistence").load({ last = true })
+		end,
 		lazy = false,
 	},
 	{
