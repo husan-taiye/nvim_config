@@ -1,6 +1,7 @@
 local set = vim.o
 set.number = true
 set.relativenumber = true
+set.encoding = "UTF-8"
 set.clipboard = "unnamed"
 
 -- 在copy后高亮
@@ -18,10 +19,10 @@ local opt = { noremap = true, silent = true }
 vim.g.mapleader = " "
 vim.keymap.set("n", "<Leader>v", "<C-w>v", opt)
 vim.keymap.set("n", "<Leader>s", "<C-w>s", opt)
-vim.keymap.set("n", "<C-l>", "<C-w>l", opt)
-vim.keymap.set("n", "<C-h>", "<C-w>h", opt)
-vim.keymap.set("n", "<C-j>", "<C-w>j", opt)
-vim.keymap.set("n", "<C-k>", "<C-w>k", opt)
+vim.keymap.set("n", "<Leader>l", "<C-w>l", opt)
+vim.keymap.set("n", "<Leader>h", "<C-w>h", opt)
+vim.keymap.set("n", "<Leader>j", "<C-w>j", opt)
+vim.keymap.set("n", "<Leader>k", "<C-w>k", opt)
 vim.keymap.set("n", "<Leader>[", "<C-o>", opt)
 vim.keymap.set("n", "<Leader>]", "<C-i>", opt)
 -- https://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
@@ -110,7 +111,7 @@ require("lazy").setup({
 		},
 		keys = {
 			{ "<leader>t", ":NERDTreeToggle<CR>", desc = "toggle nerdtree" },
-			{ "<leader>l", ":NERDTreeFind<CR>",   desc = "nerdtree find" },
+			{ "<leader>f", ":NERDTreeFind<CR>",   desc = "nerdtree find" },
 		},
 		config = function()
 			vim.cmd([[
@@ -119,7 +120,8 @@ require("lazy").setup({
 			]])
 		end,
 		dependencies = {
-			"Xuyuanp/nerdtree-git-plugin"
+			"Xuyuanp/nerdtree-git-plugin",
+			"ryanoasis/vim-devicons"
 		}
 	},
 	{
