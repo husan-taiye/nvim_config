@@ -94,6 +94,10 @@ require("lazy").setup({
 		lazy = false,
 	},
 	{
+		"tpope/vim-rhubarb",
+		event = "VeryLazy"
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		event = "VeryLazy",
 		dependencies = {
