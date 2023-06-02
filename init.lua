@@ -155,6 +155,18 @@ require("lazy").setup({
 		dependencies = { 'williamboman/mason-lspconfig.nvim' }
 	},
 	{
+		"nvim-treesitter/nvim-treesitter",
+		event = "VeryLazy",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = { "lua", "python", "vim", "json", "html" },
+				highlight = {
+					enable = true,
+				},
+			})
+		end
+	},
+	{
 		event = "VeryLazy",
 		"windwp/nvim-autopairs",
 		config = function()
@@ -409,3 +421,7 @@ if #args > 2 then
 else
 	require("persistence").load({ last = true })
 end
+
+vim.api.nvim_set_hl(0, "@lsp.type.variable.lua", { link = "Normal" })
+vim.api.nvim_set_hl(0, "Identifier", { link = "Normal" })
+vim.api.nvim_set_hl(0, "TSVariable", { link = "Normal" })
