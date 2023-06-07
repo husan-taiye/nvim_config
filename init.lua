@@ -215,6 +215,15 @@ require("lazy").setup({
 		config = function()
 			require 'nvim-treesitter.configs'.setup {
 				textobjects = {
+					swap = {
+						enable = true,
+						swap_next = {
+							["<leader>a"] = "@parameter.inner",
+						},
+						swap_previous = {
+							["<leader>A"] = "@parameter.inner",
+						},
+					},
 					select = {
 						enable = true,
 
@@ -225,6 +234,8 @@ require("lazy").setup({
 							-- You can use the capture groups defined in textobjects.scm
 							["af"] = "@function.outer",
 							["if"] = "@function.inner",
+							["aa"] = "@parameter.outer",
+							["ia"] = "@parameter.inner",
 							["ac"] = "@class.outer",
 							-- You can optionally set descriptions to the mappings (used in the desc parameter of
 							-- nvim_buf_set_keymap) which plugins like which-key display
