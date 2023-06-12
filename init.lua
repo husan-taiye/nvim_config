@@ -142,6 +142,13 @@ require("lazy").setup({
 		}
 	},
 	{
+		"ggandor/leap.nvim",
+		event = "VeryLazy",
+		config = function()
+			require('leap').add_default_mappings()
+		end,
+	},
+	{
 		event = "VeryLazy",
 		"williamboman/mason.nvim",
 		build = ":MasonUpdate", -- :MasonUpdate updates registry contents
@@ -471,6 +478,7 @@ require("lspconfig").lua_ls.setup({
 vim.cmd.cnoreabbrev([[git Git]])
 vim.cmd.abbreviate("ture", "true")
 vim.cmd.cnoreabbrev([[gp Git push]])
+vim.cmd.cnoreabbrev([[gco Git checkout]])
 vim.cmd.cnoreabbrev([[Gbrowse GBrowse]])
 
 vim.cmd([[
