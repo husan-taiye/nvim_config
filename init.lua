@@ -506,3 +506,9 @@ end
 vim.api.nvim_set_hl(0, "@lsp.type.variable.lua", { link = "Normal" })
 vim.api.nvim_set_hl(0, "Identifier", { link = "Normal" })
 vim.api.nvim_set_hl(0, "TSVariable", { link = "Normal" })
+
+-- neovide
+vim.g.neovide_scale_factor = 0.8
+vim.opt.linespace = 0
+-- 当前行高亮
+vim.o.cursorline = true
