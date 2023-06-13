@@ -512,3 +512,7 @@ vim.g.neovide_scale_factor = 0.8
 vim.opt.linespace = 0
 -- 当前行高亮
 vim.o.cursorline = true
+-- tab 4个空格
+vim.o.tabstop = 4
+-- 换行自动缩进4个空格
+vim.o.shiftwidth = 4
