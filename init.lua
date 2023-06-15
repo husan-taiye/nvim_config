@@ -17,6 +17,10 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 -- keybindings
 local opt = { noremap = true, silent = true }
 vim.g.mapleader = " "
+vim.keymap.set("n", "<Leader>u", "<C-u>", opt)
+vim.keymap.set("n", "<Leader>d", "<C-d>", opt)
+vim.keymap.set("v", "<Tab>", ">", opt)
+vim.keymap.set("n", "<Tab>", ">", opt)
 vim.keymap.set("n", "<Leader>v", "<C-w>v", opt)
 vim.keymap.set("n", "<Leader>s", "<C-w>s", opt)
 vim.keymap.set("n", "<Leader>l", "<C-w>l", opt)
@@ -115,9 +119,11 @@ require("lazy").setup({
 		},
 		keys = {
 			{ "<leader>t", ":NERDTreeToggle<CR>", desc = "toggle nerdtree" },
-			{ "<leader>f", ":NERDTreeFind<CR>",   desc = "nerdtree find" },
+			{ "<leader>n", ":NERDTreeFind<CR>",   desc = "nerdtree find" },
 		},
 		config = function()
+			-- nerdtree不显示pyc文件
+			vim.g.NERDTreeIgnore = { ".pyc$" }
 			vim.cmd([[
 			let NERDTreeShowLineNumbers=1
 			autocmd FileType nerdtree setlocal relativenumber
@@ -213,6 +219,12 @@ require("lazy").setup({
 				highlight = {
 					enable = true,
 				},
+				folding = {
+					enable = true,
+					-- 设置可折叠的代码元素
+					foldmethod = 'expr',
+					foldexpr = 'nvim_treesitter#foldexpr()'
+				}
 			})
 		end
 	},
@@ -510,9 +522,21 @@ vim.api.nvim_set_hl(0, "TSVariable", { link = "Normal" })
 -- neovide
 vim.g.neovide_scale_factor = 0.8
 vim.opt.linespace = 0
+vim.o.mouse = ""
+vim.g.neovide_underline_automatic_scaling = true
+vim.g.neovide_fullscreen = true
+vim.g.neovide_remember_window_size = true
+
+-- vim.o.guifont = "Source Code Pro:h14"
+
 -- 当前行高亮
 vim.o.cursorline = true
 -- tab 4个空格
 vim.o.tabstop = 4
 -- 换行自动缩进4个空格
 vim.o.shiftwidth = 4
+
+-- 代码折叠
+-- vim.o.foldenable = true
+-- vim.o.foldmethod = 'indent'
+-- vim.o.foldlevel = 99
