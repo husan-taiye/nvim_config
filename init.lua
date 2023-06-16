@@ -17,6 +17,17 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 -- keybindings
 local opt = { noremap = true, silent = true }
 vim.g.mapleader = " "
+-- 插入模式下 -> 普通模式
+vim.keymap.set("i", "jj", "<Esc>", opt)
+-- 插入模式下 光标上下左右移动
+vim.keymap.set("i", "<C-k>", "<up>", opt)
+vim.keymap.set("i", "<C-j>", "<down>", opt)
+vim.keymap.set("i", "<C-h>", "<left>", opt)
+vim.keymap.set("i", "<C-l>", "<right>", opt)
+-- 设置全局搜索当前单词
+vim.api.nvim_set_keymap('n', '<leader>g',
+	[[<cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>]], opt)
+
 vim.keymap.set("n", "<Leader>u", "<C-u>", opt)
 vim.keymap.set("n", "<Leader>d", "<C-d>", opt)
 vim.keymap.set("v", "<Tab>", ">", opt)
@@ -219,12 +230,12 @@ require("lazy").setup({
 				highlight = {
 					enable = true,
 				},
-				folding = {
-					enable = true,
-					-- 设置可折叠的代码元素
-					foldmethod = 'expr',
-					foldexpr = 'nvim_treesitter#foldexpr()'
-				}
+				-- folding = {
+				-- 	enable = true,
+				-- 	-- 设置可折叠的代码元素
+				-- 	foldmethod = 'expr',
+				-- 	foldexpr = 'nvim_treesitter#foldexpr()'
+				-- }
 			})
 		end
 	},
@@ -537,6 +548,6 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 
 -- 代码折叠
--- vim.o.foldenable = true
--- vim.o.foldmethod = 'indent'
--- vim.o.foldlevel = 99
+vim.o.foldenable = true
+vim.o.foldmethod = 'indent'
+vim.o.foldlevel = 99
