@@ -314,6 +314,21 @@ require("lazy").setup({
 	},
 	{
 		'kyazdani42/nvim-tree.lua',
+	},
+	{
+		'folke/tokyonight.nvim',
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
+	{
+		'nvim-lualine/lualine.nvim',
+		event = "VeryLazy",
+		config = function()
+			require('lualine').setup {
+				--options = { theme = require 'lualine.themes.gruvbox' },
+			}
+		end
 	}
 })
 
@@ -551,3 +566,6 @@ vim.o.shiftwidth = 4
 vim.o.foldenable = true
 vim.o.foldmethod = 'indent'
 vim.o.foldlevel = 99
+
+
+vim.cmd [[colorscheme tokyonight]]
