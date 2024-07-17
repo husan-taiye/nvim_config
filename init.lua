@@ -77,18 +77,29 @@ require("lazy").setup({
 		end,
 	},
 	-- telescope
+	--	{
+	--		cmd = "Telescope",
+	--		keys = {
+	--			{ "<leader>p",  ":Telescope find_files<CR>", desc = "find files" },
+	--			{ "<leader>P",  ":Telescope live_grep<CR>",  desc = "grep file" },
+	--			{ "<leader>rs", ":Telescope resume<CR>",     desc = "resume" },
+	--			{ "<leader>q",  ":Telescope oldfiles<CR>",   desc = "oldfiles" },
+	--		},
+	--		'nvim-telescope/telescope.nvim',
+	--		tag = '0.1.1',
+	--		-- or                              , branch = '0.1.1',
+	--		dependencies = { 'nvim-lua/plenary.nvim' }
+	--	},
 	{
-		cmd = "Telescope",
+		'nvim-telescope/telescope.nvim',
+		requires = { { 'nvim-lua/plenary.nvim' } },
+		tag = '0.1.8',
 		keys = {
 			{ "<leader>p",  ":Telescope find_files<CR>", desc = "find files" },
 			{ "<leader>P",  ":Telescope live_grep<CR>",  desc = "grep file" },
 			{ "<leader>rs", ":Telescope resume<CR>",     desc = "resume" },
 			{ "<leader>q",  ":Telescope oldfiles<CR>",   desc = "oldfiles" },
 		},
-		'nvim-telescope/telescope.nvim',
-		tag = '0.1.1',
-		-- or                              , branch = '0.1.1',
-		dependencies = { 'nvim-lua/plenary.nvim' }
 	},
 	{
 		event = "VeryLazy",
@@ -331,7 +342,6 @@ require("lazy").setup({
 		end
 	}
 })
-
 -- 加载base16-tender
 vim.cmd.colorscheme("base16-tender")
 
