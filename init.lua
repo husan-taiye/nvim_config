@@ -230,7 +230,12 @@ require("lazy").setup({
 		event = "VeryLazy",
 		config = function()
 			require("nvim-treesitter.configs").setup({
-				ensure_installed = { "lua", "python", "vim", "json", "html" },
+				ensure_installed = { "lua", "python", "vim", 'go', "json", "html" },
+				sync_install = false,
+				auto_install = true,
+				ignore_install = { "javascript" },
+				modules = {},
+				indent = { enable = true, disable = { 'python' } },
 				incremental_selection = {
 					enable = true,
 					keymaps = {
@@ -255,6 +260,11 @@ require("lazy").setup({
 		event = "VeryLazy",
 		config = function()
 			require 'nvim-treesitter.configs'.setup {
+				modules = {},
+				sync_install = false,
+				auto_install = true,
+				ensure_installed = { "lua", "python", "vim", 'go', "json", "html" },
+				ignore_install = { "javascript" },
 				textobjects = {
 					swap = {
 						enable = true,
@@ -340,7 +350,66 @@ require("lazy").setup({
 				--options = { theme = require 'lualine.themes.gruvbox' },
 			}
 		end
-	}
+	},
+	{
+		'akinsho/bufferline.nvim',
+		version = "*",
+		dependencies = 'nvim-tree/nvim-web-devicons'
+	},
+	{
+		'RRethy/vim-illuminate',
+		event = "BufReadPost",
+		config = function()
+			require("illuminate").configure({
+				delay = 100,
+				filetypes_denylist = {
+					"NvimTree",
+					"toggleterm",
+					"TelescopePrompt",
+				},
+			})
+		end,
+		keys = {
+			{
+				"]r",
+				function()
+					require("illuminate").goto_next_reference(false)
+				end,
+				desc = "illuminate Next Reference",
+			},
+			{
+				"[r",
+				function()
+					require("illuminate").goto_prev_reference(false)
+				end,
+				desc = "illuminate Prev Reference",
+			},
+		},
+	},
+	{
+		'akinsho/toggleterm.nvim',
+		version = "*",
+		cmd = { 'ToggleTerm' },
+		config = function()
+			require('toggleterm').setup({
+				size = function(term)
+					if term.direction == 'horizontal' then
+						return 15
+					elseif term.direction == 'vertical' then
+						return vim.o.columns * 0.4
+					end
+				end
+			})
+			-- set keymaps to easily move between buffers and terminal
+			function _G.set_terminal_keymaps()
+				local opts = { buffer = 0 }
+				vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+				vim.keymap.set('t', 'jk', [[<C-\><C-n><Cmd>ToggleTerm<CR>]], opts)
+			end
+
+			vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+		end
+	},
 })
 -- 加载base16-tender
 vim.cmd.colorscheme("base16-tender")
@@ -579,3 +648,26 @@ vim.o.foldlevel = 99
 
 
 vim.cmd [[colorscheme tokyonight]]
+
+-- bufferline 安装
+vim.opt.termguicolors = true
+require("bufferline").setup {}
+
+for i = 1, 9 do
+	vim.keymap.set('n', '<leader>' .. i, function() require("bufferline").go_to(i, true) end)
+end
+
+vim.keymap.set('n', '<leader>H', '<Cmd>BufferLineCyclePrev<CR>')
+vim.keymap.set('n', '<leader>L', '<Cmd>BufferLineCycleNext<CR>')
+vim.keymap.set('n', 'gT', '<Cmd>BufferLineCyclePrev<CR>')
+vim.keymap.set('n', 'gt', '<Cmd>BufferLineCycleNext<CR>')
+vim.keymap.set('n', '<C-j>', '<Cmd>BufferLineMovePrev<CR>')
+vim.keymap.set('n', '<C-k>', '<Cmd>BufferLineMoveNext<CR>')
+vim.keymap.set('n', 'ZZ', function()
+	if vim.bo.modified then
+		vim.cmd.write()
+	end
+	local buf = vim.fn.bufnr()
+	require("bufferline").cycle(-1)
+	vim.cmd.bdelete(buf)
+end)
