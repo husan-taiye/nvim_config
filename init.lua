@@ -28,8 +28,6 @@ vim.keymap.set("i", "<C-l>", "<right>", opt)
 vim.api.nvim_set_keymap('n', '<leader>g',
 	[[<cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>]], opt)
 
-vim.keymap.set("n", "<Leader>u", "<C-u>", opt)
-vim.keymap.set("n", "<Leader>d", "<C-d>", opt)
 vim.keymap.set("v", "<Tab>", ">", opt)
 vim.keymap.set("n", "<Tab>", ">", opt)
 vim.keymap.set("n", "<Leader>v", "<C-w>v", opt)
@@ -410,7 +408,56 @@ require("lazy").setup({
 			vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 		end
 	},
+	-- 竖列线
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
+		opts = {}
+	},
+	-- 柔和滑动
+	{
+		"karb94/neoscroll.nvim",
+		config = function()
+			require('neoscroll').setup({
+				{
+					mappings = { -- Keys to be mapped to their corresponding default scrolling animation
+						'<C-u>', '<C-d>',
+						'<C-b>', '<C-f>',
+						'<C-y>', '<C-e>',
+						'zt', 'zz', 'zb',
+					},
+					hide_cursor = true, -- Hide cursor while scrolling
+					stop_eof = true, -- Stop at <EOF> when scrolling downwards
+					respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+					cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+					easing = 'linear', -- Default easing function
+					pre_hook = nil, -- Function to run before the scrolling animation starts
+					post_hook = nil, -- Function to run after the scrolling animation ends
+					performance_mode = false, -- Disable "Performance Mode" on all buffers.
+				}
+			})
+		end
+	}
 })
+
+
+-- 滑动
+local neoscroll = require('neoscroll')
+local keymap = {
+	["<leader>u"] = function() neoscroll.ctrl_u({ duration = 250 }) end,
+	["<leader>d"] = function() neoscroll.ctrl_d({ duration = 250 }) end,
+	["<leader>b"] = function() neoscroll.ctrl_b({ duration = 450 }) end,
+	["<leader>f"] = function() neoscroll.ctrl_f({ duration = 450 }) end,
+	["<leader>y"] = function() neoscroll.scroll(-0.1, { move_cursor = false, duration = 100 }) end,
+	["<leader>e"] = function() neoscroll.scroll(0.1, { move_cursor = false, duration = 100 }) end,
+	["zt"]        = function() neoscroll.zt({ half_win_duration = 250 }) end,
+	["zz"]        = function() neoscroll.zz({ half_win_duration = 250 }) end,
+	["zb"]        = function() neoscroll.zb({ half_win_duration = 250 }) end,
+}
+local modes = { 'n', 'v', 'x' }
+for key, func in pairs(keymap) do
+	vim.keymap.set(modes, key, func)
+end
 -- 加载base16-tender
 vim.cmd.colorscheme("base16-tender")
 
@@ -450,7 +497,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 		vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
 		vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-		vim.keymap.set('n', '<leader>f', function()
+		vim.keymap.set('n', '<leader>F', function()
 			vim.lsp.buf.format { async = true }
 		end, opts)
 	end,
@@ -671,3 +718,17 @@ vim.keymap.set('n', 'ZZ', function()
 	require("bufferline").cycle(-1)
 	vim.cmd.bdelete(buf)
 end)
+
+vim.g.python_host_prog = '/Users/fox_three/miniconda3/envs/blended_learning/bin/python'
+vim.g.python3_host_prog = '/Users/fox_three/miniconda3/envs/doc_processor/bin/python'
+
+-- 使用 neovim-remote 调用 Python 2 插件
+vim.cmd [[
+  function! RunPython2Plugin(...)
+    call system('~/path/to/python2_plugin.sh ' . join(a:000, ' '))
+  endfunction
+]]
+
+-- 绑定一个命令或快捷键来调用这个函数
+vim.api.nvim_set_keymap('n', '<leader>r', ':call RunPython2Plugin("your_python2_plugin.py")<CR>',
+	{ noremap = true, silent = true })
