@@ -25,9 +25,13 @@ vim.keymap.set("i", "<C-j>", "<down>", opt)
 vim.keymap.set("i", "<C-h>", "<left>", opt)
 vim.keymap.set("i", "<C-l>", "<right>", opt)
 -- 设置全局搜索当前单词
-vim.api.nvim_set_keymap('n', '<leader>g',
+vim.api.nvim_set_keymap('n', '<leader>G',
 	[[<cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })<CR>]], opt)
+-- 设置搜索当前函数名使用处
+vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua require("telescope.builtin").lsp_references()<CR>',
+	{ noremap = true, silent = true })
 
+--
 vim.keymap.set("v", "<Tab>", ">", opt)
 vim.keymap.set("n", "<Tab>", ">", opt)
 vim.keymap.set("n", "<Leader>v", "<C-w>v", opt)
@@ -437,9 +441,51 @@ require("lazy").setup({
 				}
 			})
 		end
+	},
+	{
+		"kylechui/nvim-surround",
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup({
+				-- Configuration here, or leave empty to use defaults
+			})
+		end
+	},
+	{
+		"utilyre/barbecue.nvim",
+		name = "barbecue",
+		version = "*",
+		dependencies = {
+			"SmiteshP/nvim-navic",
+			"nvim-tree/nvim-web-devicons", -- optional dependency
+		},
+		opts = {
+			-- configurations go here
+		},
+	},
+	-- 几款主题
+	{
+		"morhetz/gruvbox",
+	},
+	{
+		'shaunsingh/nord.nvim',
+	},
+	{
+		'navarasu/onedark.nvim',
 	}
 })
 
+-- barbecue
+require('barbecue').setup({
+	-- 可选配置项
+	show_modified = true,
+	symbols = {
+		modified = '[+]', -- 当文件已修改时显示的标记
+		ellipsis = '...', -- 当面包屑路径太长时显示的省略号
+		separator = '>', -- 分隔符
+	},
+})
 
 -- 滑动
 local neoscroll = require('neoscroll')
@@ -679,7 +725,7 @@ vim.g.neovide_underline_automatic_scaling = true
 vim.g.neovide_fullscreen = true
 vim.g.neovide_remember_window_size = true
 
--- vim.o.guifont = "Source Code Pro:h14"
+vim.o.guifont = "Menlo:h12"
 
 -- 当前行高亮
 vim.o.cursorline = true
@@ -694,11 +740,24 @@ vim.o.foldmethod = 'indent'
 vim.o.foldlevel = 99
 
 
-vim.cmd [[colorscheme tokyonight]]
+--vim.cmd [[colorscheme gruvbox]]
+--vim.cmd [[colorscheme nord]]
+
+require('onedark').setup {
+	style = 'darker'
+}
+vim.cmd [[colorscheme onedark]]
 
 -- bufferline 安装
 vim.opt.termguicolors = true
-require("bufferline").setup {}
+require("bufferline").setup {
+	options = {
+		numbers = function(opts)
+			return string.format('%s|%s', opts.id, opts.ordinal)
+			-- return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal))
+		end,
+	}
+}
 
 for i = 1, 9 do
 	vim.keymap.set('n', '<leader>' .. i, function() require("bufferline").go_to(i, true) end)
@@ -719,7 +778,8 @@ vim.keymap.set('n', 'ZZ', function()
 	vim.cmd.bdelete(buf)
 end)
 
-vim.g.python_host_prog = '/Users/fox_three/miniconda3/envs/blended_learning/bin/python'
+
+vim.g.python_host_prog = '/Users/fox_three/miniconda3/envs/courseware27/bin/python'
 vim.g.python3_host_prog = '/Users/fox_three/miniconda3/envs/doc_processor/bin/python'
 
 -- 使用 neovim-remote 调用 Python 2 插件
